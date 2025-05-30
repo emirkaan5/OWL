@@ -1,4 +1,4 @@
-# OWL: Probing Cross-Lingual Recall of Memorized Texts via World Literature
+# 🦉 OWL: Probing Cross-Lingual Recall of Memorized Texts via World Literature
 
 ## Overview
 
@@ -7,6 +7,8 @@ Code and Data to support following paper:
 Alisha Srivastava\*, Emir Korukluoglu\*, Minh Nhat Le\*, Duyen Tran, Chau Minh Pham, Marzena Karpinska, Mohit Iyyer, "OWL: Probing Cross-Lingual Recall of Memorized Texts via World Literature"
 
 This repository contains necessary pipelines in order to create a Multilingual Aligned Dataset and scripts necessary to evaluate LLM's on Cross-Lingual Knowledge Transfer and Memorization.
+
+Learn more about 🦉 OWL at https://www.alishasrivastava.com/papers/OWL/. 
 
 ## 🚀 Hypotheses & Research Questions
 
