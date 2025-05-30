@@ -27,11 +27,21 @@ This repository contains necessary pipelines in order to create a Multilingual A
 
 ## 👩🏻‍💻 Contributors
 
-| ![Alisha Srivastava](https://avatars.githubusercontent.com/alishasrivas?s=100) | ![Nhat Minh Le](https://pbs.twimg.com/profile_images/1928267818337812480/gqkgQjPJ_400x400.jpg) | ![Emir Korukluoglu](https://avatars.githubusercontent.com/emirkaan5?s=100) |
-| :----------------------------------------------------------------------------: | :-------------------------------------------------------------------: | :------------------------------------------------------------------------: |
-|              [Alisha Srivastava](https://github.com/alishasrivas)              |              [Nhat Minh Le](https://github.com/nhminle)              |              [Emir Korukluoglu](https://github.com/emirkaan5)              |
+<table>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/alishasrivas?s=100" width="100"/></td>
+    <td><img src="https://pbs.twimg.com/profile_images/1928267818337812480/gqkgQjPJ_400x400.jpg" width="100"/></td>
+    <td><img src="https://avatars.githubusercontent.com/emirkaan5?s=100" width="100"/></td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/alishasrivas">Alisha Srivastava</a></td>
+    <td><a href="https://github.com/nhminle">Nhat Minh Le</a></td>
+    <td><a href="https://github.com/emirkaan5">Emir Korukluoglu</a></td>
+  </tr>
+</table>
 
 ### Special Thanks 🌟
+
 
 - **Chau Minh Pham** - For guiding our research and being our research mentor.
 - **Dr. Marzena Karpinska** - For guiding our research and for her invaluable expertise.
