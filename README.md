@@ -39,7 +39,7 @@ This repository contains necessary pipelines in order to create a Multilingual A
 
 ## 🏗️ Dataset Construction
 
-### Collect 25 books in English, Turkish, Vietnamese, and Spanish.
+### Collect 30 books in English, Turkish, Vietnamese, and Spanish.
 
 -- from Project Gutenberg and Online Sources
 
