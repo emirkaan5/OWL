@@ -3,6 +3,19 @@ import pandas as pd
 import requests
 import time
 import textwrap
+import pprint
+import logging
+
+# Configure logging
+
+logging.basicConfig(
+    filename='script.log',
+    filemode='a',  # Append mode
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+# Example usage
+logging.info("Script started.")
 
 
 def search_passages_in_infini_gram(root_folder, index_name, output_file):
@@ -20,71 +33,76 @@ def search_passages_in_infini_gram(root_folder, index_name, output_file):
     results = []
 
     # Walk through all directories and subdirectories
-    for dirpath, _, filenames in os.walk(root_folder):
-        for filename in filenames:
-            if filename.endswith('.csv') and ("unmasked_passages" in filename or "non_NE" in filename ):
-                file_path = os.path.join(dirpath, filename)
-                try:
-                    # Read the CSV file
-                    df = pd.read_csv(file_path)
 
-                    # Check if 'en' column exists
-                  #  if 'en'  in df.columns:
-                    for col in df.columns:
-                        if "en" not in col:
-                        # Iterate over each passage in the 'en' column
-                            for passage in df[col].dropna().unique():
 
-                                # Split passage into chunks if it's longer than 1000 characters
-                                chunks = textwrap.wrap(passage, width=1000, break_long_words=False, break_on_hyphens=False)
+    # Read the CSV file
+    df = pd.read_csv(root_folder)
+    langs = ['en','vi','es','tr']
+    # Check if 'en' column exists
+    #  if 'en'  in df.columns:
+    for col in langs:
+        # Keep index while dropping NaN
+        non_na_passages = df[col].dropna()
 
-                                for chunk in chunks:
-                                    payload = {
-                                        'index': index_name,
-                                        'query_type': 'count',
-                                        'query': chunk
-                                    }
+        for idx, passage in non_na_passages.items():
+            # Split passage into chunks if it's longer than 1000 characters
+            chunks = textwrap.wrap(passage, width=1000, break_long_words=False, break_on_hyphens=False)
 
-                                    # Retry mechanism for 429 errors
-                                    for attempt in range(5):
-                                        response = requests.post('https://api.infini-gram.io/', json=payload)
-                                        if response.status_code == 200:
-                                            result = response.json()
-                                            # print(result)
-                                            # print(result["count"])
-                                            count = result.get('count', None)
-                                            approx = result.get('approx', None)
-                                            print(count, approx)
-                                            results.append({
-                                                'filename': filename,
-                                                'passage': chunk,
-                                                'count': count,
-                                                'approx': approx
-                                            })
-                                            break
-                                        elif response.status_code == 429:
-                                            wait_time = 2 ** attempt
-                                            print(f"Rate limit hit. Retrying in {wait_time} seconds...")
-                                            time.sleep(wait_time)
-                                        else:
-                                            print(f"API request failed for chunk: {chunk} (Status code: {response.status_code})")
-                                            break
+            for chunk in chunks:
+                payload = {
+                    'index': index_name,
+                    'query_type': 'infgram_prob',
+                    'query': chunk
+                }
 
-                                    # Small delay to avoid hammering the server
-                                    time.sleep(1)
+                for attempt in range(5):
+                    response = requests.post('https://api.infini-gram.io/', json=payload)
+                    # print(response.status_code)
+                    if response.status_code == 200:
+                        result = response.json()
+                        # count =result.get('count',0)
+                        logging.info(result)
+                        # if count > 0:
+
+                        # print(result)
+                        logging.info("sent payload")
+                        result_entry = {
+                            "row_index": idx,
+                            "original_passage": passage,
+                            "chunk": chunk,
+                            "count": result.get("prob", 0),
+                            "prompt_cnt": result.get("prompt_cnt", 0),
+                            "cont_cnt": result.get("cnt_cnt", 0)
+                        }
+                        results.append(result_entry)
+
+                        # Log the dictionary
+                        print("Appended result:\n%s", pprint.pformat(result_entry))
+                        for handler in logging.getLogger().handlers:
+                            handler.flush()
+                        break
+                    elif response.status_code == 429:
+                        logging.info("RATELIMITTTT")
+                        time.sleep(1)
                     else:
-                        print(f"Column 'en' not found in {filename}.")
-                except Exception as e:
-                    print(f"Error processing {filename}: {e}")
+                        logging.info(f"Error: {response.status_code} - {response.text}")
+                        break
+
+# Optional: convert to DataFrame
+
+
+                    # Small delay to avoid hammering the server
+                    time.sleep(0.1)
 
     # Save results to a CSV file
     results_df = pd.DataFrame(results)
     results_df.to_csv(output_file, index=False)
-    print(f"Results saved to {output_file}")
+    logging.info(f"Results saved to {output_file}")
 
 
 # Example usage
-folder_path = '/home/ekorukluoglu_umass_edu/beam2/BEAM/scripts/Prompts'  # Replace with the path to your folder containing CSV files
-index_name = 'v4_rpj_llama_s4'        # Replace with the appropriate index name
-output_file = 'search_results_multilingual.csv'    # Replace with your desired output file path
-search_passages_in_infini_gram(folder_path, index_name, output_file)
+if __name__ == '__main__':
+    folder_path = '/Users/emir/Projects/BEAM/final dataset/non_ne.csv'  # Replace with the path to your folder containing CSV files
+    index_name = 'v4_rpj_llama_s4'        # Replace with the appropriate index name
+    output_file = 'olmo_search_results_multilingual_non_ne_infinigram.csv'    # Replace with your desired output file path
+    search_passages_in_infini_gram(folder_path, index_name, output_file)
