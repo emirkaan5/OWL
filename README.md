@@ -27,7 +27,7 @@ This repository contains necessary pipelines in order to create a Multilingual A
 
 ## 👩🏻‍💻 Contributors
 
-| ![Alisha Srivastava](https://avatars.githubusercontent.com/alishasrivas?s=100) | ![Nhat Minh Le]([https://avatars.githubusercontent.com/nhminhle?s=100](https://avatars.githubusercontent.com/u/85340276?v=4)) | ![Emir Korukluoglu](https://avatars.githubusercontent.com/emirkaan5?s=100) |
+| ![Alisha Srivastava](https://avatars.githubusercontent.com/alishasrivas?s=100) | ![Nhat Minh Le](https://x.com/nhminle/photo) | ![Emir Korukluoglu](https://avatars.githubusercontent.com/emirkaan5?s=100) |
 | :----------------------------------------------------------------------------: | :-------------------------------------------------------------------: | :------------------------------------------------------------------------: |
 |              [Alisha Srivastava](https://github.com/alishasrivas)              |              [Nhat Minh Le](https://github.com/nhminle)              |              [Emir Korukluoglu](https://github.com/emirkaan5)              |
 
