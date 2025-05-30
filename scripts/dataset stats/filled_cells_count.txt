@@ -1,0 +1,18 @@
+Counts for {lang}_gt columns:
+st_gt: 6 out of 1474 (0.41%)
+yo_gt: 0 out of 1474 (0.00%)
+tn_gt: 6 out of 1474 (0.41%)
+ty_gt: 0 out of 1474 (0.00%)
+mai_gt: 0 out of 1474 (0.00%)
+mg_gt: 0 out of 1474 (0.00%)
+Total filled cells: 12 out of 8844 (0.14%)
+Total unfilled cells: 8832 out of 8844 (99.86%)
+
+Counts for language columns (en_masked, es_masked, tr_masked, vi_masked):
+en_masked: 1474 out of 1474 (100.00%)
+es_masked: 1474 out of 1474 (100.00%)
+tr_masked: 1474 out of 1474 (100.00%)
+vi_masked: 1474 out of 1474 (100.00%)
+Total filled cells for language columns: 5896 out of 5896 (100.00%)
+
+Total possible cells across all columns: 14740
