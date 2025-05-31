@@ -8,8 +8,7 @@ Alisha Srivastava\*, Emir Korukluoglu\*, Minh Nhat Le\*, Duyen Tran, Chau Minh P
 
 This repository contains necessary pipelines in order to create a Multilingual Aligned Dataset and scripts necessary to evaluate LLM's on Cross-Lingual Knowledge Transfer and Memorization.
 
-Learn more about 🦉 OWL at https://www.alishasrivastava.com/papers/OWL/. 
-
+Read our paper at https://arxiv.org/abs/2505.22945
 ## 🚀 Hypotheses & Research Questions
 
 ### 1. Translation Memorization
