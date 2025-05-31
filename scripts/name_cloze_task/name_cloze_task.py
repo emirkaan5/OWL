@@ -88,7 +88,7 @@ def predict(lang, passages, llm, mode="unshuffled", prompt_setting="zero-shot"):
 
 def name_cloze(csv_file_name, book_title, llm, model_name, prompt_setting="zero-shot"):
     try:
-        df = pd.read_csv(csv_file_name)
+        df = pd.read_json(csv_file_name)
 
         for language in df.columns:
             if language != 'Single_ent':
@@ -101,7 +101,7 @@ def name_cloze(csv_file_name, book_title, llm, model_name, prompt_setting="zero-
                 index_of_language = df.columns.get_loc(language)
                 df.insert(index_of_language + 1, f"{language}_results", pd.Series(output))
 
-        df.to_csv(f"{book_title}_name_cloze_{model_name}.csv", index=False, encoding='utf-8')
+        df.to_csv(f"out/{book_title}_name_cloze_{model_name}.csv", index=False, encoding='utf-8')
     except Exception as e:
         print(f'Error: {e}')
 
@@ -114,17 +114,12 @@ def get_folder_names(directory):
     return folder_names
 
 if __name__ == "__main__":
-    titles = get_folder_names('/home/nhatminhle_umass_edu/Prompts')
-    
     parser = ArgumentParser()
     parser.add_argument("model", type=str, help="Name of the model to use")
     parser.add_argument("gpus", type=str, help="Nums of gpus to use")
     args = parser.parse_args()
 
     llm = LLM(model=args.model, tensor_parallel_size=int(args.gpus), max_model_len=2048)
-    
-    skip_list = [] # add books to skip 
-    for title in titles:
-        if title not in skip_list:
-            print(f'----------------- running {title} -----------------')
-            name_cloze(csv_file_name=f"/home/nhatminhle_umass_edu/Prompts/{title}/{title}_filtered_masked.csv", book_title=title, llm=llm, model_name=args.model.split('/')[1], prompt_setting="zero-shot") # modify the prompt setting here
+    data_path = ""
+    filename =  os.path.basename(data_path).replace(".json","")
+    name_cloze(data_path,filename,llm,args.model.split('/')[1],"one-shot")

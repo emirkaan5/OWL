@@ -133,7 +133,7 @@ def remove_extra_suffix(text, limit):
 
 def prefixProbe(csv_file_name, book_title, prompt_setting="zero-shot"):
     try:
-        df = pd.read_csv(csv_file_name)
+        df = pd.read_json(csv_file_name)
         df_out = pd.DataFrame()
 
         languages = ["en", "vi", "es", "tr"]
@@ -169,8 +169,7 @@ def get_folder_names(directory):
     return folder_names
 
 if __name__ == "__main__":
-    titles = ['Alice_in_Wonderland']
-
-    for title in titles:
-        print(f'----------------- running {title} -----------------')
-        prefixProbe(csv_file_name=f"/Users/alishasrivastava/BEAM/scripts/Prompts/{title}/{title}_filtered.csv", book_title=title, prompt_setting="zero-shot") # modify the prompt setting here
+    
+    data_path = ""
+    filename =  os.path.basename(data_path).replace(".json","")
+    prefixProbe(csv_file_name=data_path, book_title=filename, prompt_setting="zero-shot") # modify the prompt setting here

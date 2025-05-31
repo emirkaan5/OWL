@@ -21,7 +21,7 @@ def extract_output(llm_output):
 def predict(lang, passage, mode="unshuffled", prompt_setting="zero-shot"):
     
     demonstrations = {
-        "es": {
+                "es": {
             "unshuffled": "Hemos de agregar que quemaba tan hondamente el pecho de [MASK], que quizá había mayor verdad en el rumor que lo que nuestra moderna incredulidad nos permite aceptar.",
             "shuffled": "lo Hemos quemaba de verdad nos moderna rumor hondamente que que el quizá tan en el mayor había que agregar pecho [MASK], que aceptar. de incredulidad permite nuestra"
         },
@@ -36,7 +36,32 @@ def predict(lang, passage, mode="unshuffled", prompt_setting="zero-shot"):
         "en": {
             "unshuffled": "And we must needs say, it seared [MASK]'s bosom so deeply, that perhaps there was more truth in the rumor than our modern incredulity may be inclined to admit.",
             "shuffled": "admit. say, to inclined that the be more must so than it may needs modern we in rumor was deeply, incredulity perhaps our seared bosom there [MASK]'s And truth"
+        },
+        "st": {
+            "unshuffled": "'Me re tlameha ho re, earared [MASK] bosom e tebileng haholo, hore mohlomong ho na le 'nete e ngata ka menyenyetsi ho feta ho se lumele ha rona ea kajeno e ka ba tšekamelo ea ho lumela.",
+            "shuffled": "earared e re 'Me kajeno e re, ho lumele ea mohlomong e hore menyenyetsi ngata ha ka rona 'nete ba na ka ea le haholo, tšekamelo feta ho tebileng se bosom ho ho lumela. ho tlameha [MASK]"
+        },
+        "yo": {
+            "unshuffled": "Àti pé a gbọ́dọ̀ nílò láti sọ pé, ó mú àyà [MASK] jinlẹ̀, pé bóyá òtítọ́ púpọ̀ wà nínú àròsọ ju àìgbàgbọ́ ìgbàlódé wa lọ lè fẹ́ láti gbà.",
+            "shuffled": "nínú a jinlẹ̀, ìgbàlódé [MASK] òtítọ́ ó púpọ̀ pé, pé mú wà láti lọ àròsọ àìgbàgbọ́ sọ wa láti àyà gbọ́dọ̀ lè fẹ́ pé nílò ju Àti gbà. bóyá"
+        },
+        "tn": {
+            "unshuffled": "Mme re tshwanetse ra re, [MASK] le fa go ntse jalo, go ne go na le boammaaruri jo bogolo go feta mo tumelong ya rona ya gompieno.",
+            "shuffled": "tumelong le gompieno. re, jalo, mo ya ne feta jo bogolo boammaaruri go go le [MASK] ra ya ntse go na fa Mme rona tshwanetse go re"
+        },
+        "ty": {
+            "unshuffled": "E e ti'a ia tatou ia parau e, ua î roa te ouma o [MASK] i te reira, e peneia'e ua rahi a'e te parau mau i roto i te parau i to tatou ti'aturi-ore-raa no teie tau.",
+            "shuffled": "tau. mau E te tatou ti'a teie e parau rahi te e, parau î i ua ia reira, [MASK] te to tatou i parau ua ti'aturi-ore-raa ouma roto te roa i peneia'e a'e ia e no o i"
+        },
+        "mai": {
+            "unshuffled": "आ हमरासभकेँ ई कहबाक आवश्यकता अछि जे ई [MASK] छातीकेँ एतेक गहराई सँ प्रभावित कयलक, जे शायद अफवाहमे ओहिसँ बेसी सत्य छल जतेक हमर आधुनिक अविश्वास स्वीकार करय लेल इच्छुक भऽ सकैत अछि।",
+            "shuffled": "अछि आवश्यकता अफवाहमे प्रभावित गहराई [MASK] सँ हमर ओहिसँ अछि। ई लेल बेसी छल जे जतेक हमरासभकेँ अविश्वास करय आ कयलक, स्वीकार कहबाक आधुनिक ई छातीकेँ शायद सकैत एतेक इच्छुक सत्य जे भऽ"
+        },
+        "mg": {
+            "unshuffled": "Ary tsy maintsy mila miteny isika hoe, nampivoaka lalina ny tratran'i [MASK] izany, ka angamba nisy fahamarinana bebe kokoa tao anatin'ilay tsaho fa tsy mety ho mora miaiky ny tsy finoana maoderina ananantsika.",
+            "shuffled": "miteny tsy miaiky mora maintsy mila ny tsy kokoa [MASK] tsy fa ka bebe mety tratran'i izany, anatin'ilay fahamarinana ho maoderina lalina tsaho finoana angamba Ary isika tao ananantsika. hoe, nisy nampivoaka ny"
         }
+
     }
 
     demo = demonstrations.get(lang)[mode]
@@ -81,7 +106,7 @@ def predict(lang, passage, mode="unshuffled", prompt_setting="zero-shot"):
 
 def name_cloze_task(csv_file_name, book_title, prompt_setting="zero-shot"):
     try:
-        df = pd.read_csv(csv_file_name)
+        df = pd.read_json(csv_file_name)
 
         for language in df.columns:
             if language != 'Single_ent':
@@ -92,13 +117,13 @@ def name_cloze_task(csv_file_name, book_title, prompt_setting="zero-shot"):
                     masked_passage = df[language].iloc[i]
                     base_language = language.split('_')[0]
                     content = predict(base_language, masked_passage, mode, prompt_setting)
-                    print(f'{i}: {content}')
+                    print(f'{i}: {content}, {masked_passage}, {base_language}')
                     output.append(content)
                 index_of_language = df.columns.get_loc(language)
                 guess_results = pd.Series(output)
                 df.insert(index_of_language + 1, f"{language}_results", guess_results)
                 
-        df.to_csv(f"{book_title}_name_cloze__gpt-4o-2024-11-20_{prompt_setting}.csv", index=False, encoding='utf-8')
+        df.to_csv(f"out/{book_title}_name_cloze_gpt-4o-2024-11-20_{prompt_setting}.csv", index=False, encoding='utf-8')
     except Exception as e:
         print(f'Error: {e}')
 
@@ -112,8 +137,6 @@ def get_folder_names(directory):
     return folder_names
 
 if __name__ == "__main__":
-    titles = get_folder_names('/Prompts')
-    
-    for title in titles:
-        print(f'----------------- running {title} -----------------')
-        name_cloze_task(csv_file_name=f"/Users/alishasrivastava/BEAM/scripts/Prompts/{title}/{title}_filtered_masked.csv", book_title=title, prompt_setting="zero-shot") # modify the prompt setting here
+    data_path = ""
+    filename =  os.path.basename(data_path).replace(".json","")
+    name_cloze_task(data_path,filename,"one-shot")

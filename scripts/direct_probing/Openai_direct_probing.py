@@ -113,7 +113,7 @@ def predict(lang, passage, mode, prompt_setting):
 
 def direct_probe(csv_file_name, book_title, prompt_setting):
     try:
-        df = pd.read_csv(csv_file_name)
+        df = pd.read_json(csv_file_name)
         
         # ensuring only specified columns are run
         allowed_columns = [
@@ -162,9 +162,6 @@ def get_folder_names(directory):
 
 
 if __name__ == "__main__":
-    titles = get_folder_names('/Users/alishasrivastava/BEAM-scripts/BEAM/scripts/Prompts')
-    titles.remove("2024")
-    for title in titles:
-        print(f'----------------- running {title} -----------------')
-        direct_probe(csv_file_name=f"/Users/alishasrivastava/BEAM-scripts/BEAM/scripts/Prompts/{title}/{title}_non_NE.csv", book_title=title, prompt_setting="zero-shot") # modify the prompt setting here
-            
+    data_path = ""
+    filename =  os.path.basename(data_path).replace(".json","")
+    direct_probe(data_path,filename,"one-shot")

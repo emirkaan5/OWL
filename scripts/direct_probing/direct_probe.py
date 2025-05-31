@@ -129,6 +129,6 @@ if __name__ == "__main__":
 
     llm = LLM(model=args.model, tensor_parallel_size=int(args.gpus), max_model_len=2048)
     
-    for title in titles:
-        print(f'----------------- running {title} -----------------')
-        direct_probe(csv_file_name=f"/Prompts/{title}/{title}_filtered.csv", book_title=title, llm=llm, model_name=args.model.split('/')[1], prompt_setting="zero-shot") # modify the prompt setting here
+    data_path = ""
+    filename =  os.path.basename(data_path).replace(".json","")
+    direct_probe(csv_file_name=data_path, book_title=filename, llm=llm, model_name=args.model.split('/')[1], prompt_setting="one-shot") # modify the prompt setting her

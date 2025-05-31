@@ -141,7 +141,7 @@ def remove_extra_suffix(text, limit):
 
 def prefixProbe(csv_file_name, book_title, llm, model_name, prompt_setting="zero-shot"):
     try:
-        df = pd.read_csv(csv_file_name)
+        df = pd.read_json(csv_file_name)
         df_out = pd.DataFrame()
         
         languages = ["en", "vi", "es", "tr"]
@@ -182,10 +182,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     llm = LLM(model=args.model, tensor_parallel_size=int(args.gpus), max_model_len=2048)
+    data_path = ""
+    filename =  os.path.basename(data_path).replace(".json","")
+    prefixProbe(csv_file_name=data_path, book_title=filename, llm=llm, model_name=args.model.split('/')[1], prompt_setting="zero-shot") # modify the prompt setting here
     
-    titles = get_folder_names('/scripts/Prompts')
-    skip_list = []
-    for title in titles:
-        if title not in skip_list:
-            print(f'----------------- running {title} -----------------')
-            prefixProbe(csv_file_name=f"/scripts/Prompts/{title}/{title}_filtered.csv", book_title=title, llm=llm, model_name=args.model.split('/')[1], prompt_setting="zero-shot") # modify the prompt setting here
